@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 from backend import converter, file_validator
 
+
 def open_file():
     file_path = filedialog.askopenfilename()
     valid, message = file_validator.validate_file(file_path)
@@ -17,6 +18,7 @@ def open_file():
     else:
         output_file = converter.convert_video(file_path, selected_format)
     messagebox.showinfo("Sukces", f"Plik został przekonwertowany: {output_file}")
+
 
 root = tk.Tk()
 root.title("Konwerter plików")
