@@ -12,6 +12,7 @@ def center_window(width, height):
     
     root.geometry(f"{width}x{height}+{x}+{y}")
 
+
 def open_file():
     file_path = filedialog.askopenfilename()
     
@@ -39,6 +40,7 @@ def open_file():
         messagebox.showinfo("Błąd", f"Wystąpił jakiś błąd. Spróbuj ponownie.") 
     elif output_file:
         messagebox.showinfo("Sukces", f"Plik został przekonwertowany: {output_file}") 
+
 
 root = tk.Tk()
 root.title("Konwerter plików")
