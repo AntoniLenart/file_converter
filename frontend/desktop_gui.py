@@ -1,4 +1,5 @@
 import tkinter as tk
+from PIL import Image, ImageTk
 from tkinter import filedialog, messagebox
 from backend import converter, file_validator
 
@@ -32,11 +33,20 @@ def open_file():
     #     output_file = converter.convert_audio(file_path, selected_format)
     # else:
     #     output_file = converter.convert_video(file_path, selected_format)
-    messagebox.showinfo("Sukces", f"Plik został przekonwertowany: {output_file}")
+    if output_file == 'anulowane':
+        None
+    elif output_file == 'None':
+        messagebox.showinfo("Błąd", f"Wystąpił jakiś błąd. Spróbuj ponownie.") 
+    elif output_file:
+        messagebox.showinfo("Sukces", f"Plik został przekonwertowany: {output_file}") 
 
 root = tk.Tk()
 root.title("Konwerter plików")
 root.resizable(False, False)
+
+icon_image = Image.open('./static/icon.png')
+icon_photo = ImageTk.PhotoImage(icon_image)
+root.iconphoto(True, icon_photo)
 
 root.columnconfigure(0, weight=1)
 root.rowconfigure(0, weight=1)
