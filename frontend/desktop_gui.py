@@ -14,6 +14,7 @@ def center_window(width, height):
 
 
 def open_file():
+    output_file = None
     file_path = filedialog.askopenfilename()
     
     if not file_path:  # Jeśli file_path jest pusty, użytkownik nie wybrał pliku
@@ -30,8 +31,8 @@ def open_file():
     
     if selected_format in ['jpeg', 'png', 'gif']:
         output_file = converter.convert_image(file_path, input_format, selected_format)
-    # elif selected_format in ['mp3', 'wav', 'flac']:
-    #     output_file = converter.convert_audio(file_path, selected_format)
+    elif selected_format in ['mp3', 'wav', 'flac']:
+        output_file = converter.convert_audio(file_path, input_format, selected_format)
     # else:
     #     output_file = converter.convert_video(file_path, selected_format)
     if output_file == 'anulowane':
