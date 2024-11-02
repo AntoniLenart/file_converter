@@ -1,3 +1,4 @@
+from moviepy.video.io.VideoFileClip import VideoFileClip
 from pydub import AudioSegment
 from PIL import Image
 from tkinter import filedialog as fd, messagebox
@@ -46,6 +47,7 @@ def convert_image(input_file, input_format, output_format):
         messagebox.showerror("Błąd", f"Wystąpił błąd: {e}")
         return None
 
+
 def convert_audio(input_file, input_format, output_format):
     try:
         user_canceled = False
@@ -92,9 +94,26 @@ def convert_audio(input_file, input_format, output_format):
     # audio.export(output_file, format=output_format)
     # return output_file
 
-# def convert_video(input_file, output_format):
-#     video = mp.VideoFileClip(input_file)
-#     output_file = f"{input_file.split('.')[0]}_converted.{output_format}"
-#     video.write_videofile(output_file, codec="libx264")
-#     return output_file
+
+def convert_video(input_file, input_format, output_format):
+    try:
+        # Generate output file name based on input file name and desired format
+        base_name = os.path.splitext(input_file)[0]
+        output_file = f"{base_name}_converted.{output_format}"
+
+        # Load video
+        video = VideoFileClip(input_file)
+
+        # Select codec based on format
+        if output_format == "mp4":
+            video.write_videofile(output_file, codec="libx264", audio_codec="aac")
+        elif output_format == "mov":
+            video.write_videofile(output_file, codec="mpeg4")
+        else:
+            messagebox.showerror("Unsupported output format")
+
+        return output_file
+
+    except Exception:
+        messagebox.showerror("Error during video conversion:")
 
