@@ -35,7 +35,7 @@ def open_file():
 
     # Enable formats based on the file type
     photo_formats = ["png", "jpg", "jpeg"]
-    audio_formats = ["mp3", "wav"]
+    audio_formats = ["mp3", "wav", "flac"]
     movie_formats = ["mp4", "mov"]
     if input_format in photo_formats:
         enable_option_menu(photo_formats)
