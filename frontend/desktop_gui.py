@@ -54,18 +54,24 @@ def save_file():
     selected_format = format_var.get()
 
     if selected_format in ["jpeg", "png", "gif"]:
-        output_file = converter.convert_image(file_path, input_format, selected_format, infoLbl)
+        output_file = converter.convert_image(
+            file_path, input_format, selected_format, infoLbl
+        )
     elif selected_format in ["mp3", "wav", "flac"]:
-        output_file = converter.convert_audio(file_path, input_format, selected_format, infoLbl)
+        output_file = converter.convert_audio(
+            file_path, input_format, selected_format, infoLbl
+        )
     elif selected_format in ["mp4", "mov"]:
-        converter.convert_video(file_path, input_format, selected_format, infoLbl)
+        output_file = converter.convert_video(
+            file_path, input_format, selected_format, infoLbl
+        )
 
     if output_file == "anulowane":
         pass
     elif output_file == "None":
         infoLbl["text"] = f"Wystąpił jakiś błąd. Spróbuj ponownie."
     elif output_file:
-        infoLbl['text'] = f"Plik został poprawnie przekonwertowany: {output_file}"
+        infoLbl["text"] = f"Plik został poprawnie przekonwertowany: {output_file}"
 
 
 def enable_option_menu(formats):
