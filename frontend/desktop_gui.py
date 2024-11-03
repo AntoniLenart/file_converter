@@ -53,35 +53,41 @@ def save_file():
 
     selected_format = format_var.get()
 
-    if selected_format in ['jpeg', 'png', 'gif']:
-        output_file = converter.convert_image(file_path, input_format, selected_format)
-    elif selected_format in ['mp3', 'wav', 'flac']:
-        output_file = converter.convert_audio(file_path, input_format, selected_format)
-    elif selected_format in ['mp4', 'mov']:
-        converter.convert_video(file_path, input_format, selected_format)
+    if selected_format in ["jpeg", "png", "gif"]:
+        output_file = converter.convert_image(file_path, input_format, selected_format, infoLbl)
+    elif selected_format in ["mp3", "wav", "flac"]:
+        output_file = converter.convert_audio(file_path, input_format, selected_format, infoLbl)
+    elif selected_format in ["mp4", "mov"]:
+        converter.convert_video(file_path, input_format, selected_format, infoLbl)
 
-    if output_file == 'anulowane':
+    if output_file == "anulowane":
         pass
-    elif output_file == 'None':
-        messagebox.showinfo("Błąd", f"Wystąpił jakiś błąd. Spróbuj ponownie.")
+    elif output_file == "None":
+        infoLbl["text"] = f"Wystąpił jakiś błąd. Spróbuj ponownie."
     elif output_file:
-        messagebox.showinfo("Sukces", f"Plik został przekonwertowany: {output_file}")
+        infoLbl['text'] = f"Plik został poprawnie przekonwertowany: {output_file}"
 
 
 def enable_option_menu(formats):
     # Clear existing options and update with the new formats
-    format_menu['menu'].delete(0, 'end')
+    format_menu["menu"].delete(0, "end")
     for fmt in formats:
-        format_menu['menu'].add_command(label=fmt, command=tk._setit(format_var, fmt))  # access to values
+        format_menu["menu"].add_command(
+            label=fmt, command=tk._setit(format_var, fmt)
+        )  # access to values
     format_var.set(formats[0])
-    format_menu.config(state='normal')
+    format_menu.config(state="normal")
+
+
+def get_text_label():
+    return infoLbl
 
 
 root = tk.Tk()
 root.title("Konwerter plików")
 root.resizable(False, False)
 
-icon_image = Image.open('./static/icon.png')
+icon_image = Image.open("./static/icon.png")
 icon_photo = ImageTk.PhotoImage(icon_image)
 root.iconphoto(True, icon_photo)
 
@@ -96,7 +102,7 @@ frame.pack(anchor="center", side="top", pady=65)
 format_var = tk.StringVar(value="Wybierz format")
 format_menu = tk.OptionMenu(frame, format_var, "")
 format_menu.grid(row=0, column=1, pady=(0, 10))
-format_menu.config(state='disabled')  # Disable until a file is selected
+format_menu.config(state="disabled")  # Disable until a file is selected
 
 fileBtn = tk.Button(frame, text="Wybierz plik", command=open_file)
 fileBtn.grid(row=0, column=0, pady=(0, 10))
@@ -104,8 +110,8 @@ fileBtn.grid(row=0, column=0, pady=(0, 10))
 downloadBtn = tk.Button(frame, text="Pobierz", command=save_file)
 downloadBtn.grid(row=1, column=0, pady=(0, 10))
 
-canvas = tk.Canvas(root, width=200, height=100)
-canvas.pack(side="right", fill="both", expand=True)
+canvas = tk.Canvas(root, width=200, height=100, bd=2, relief="solid")
+canvas.pack(side="right")
 
 scrollbar = tk.Scrollbar(root, orient="vertical", command=canvas.yview)
 scrollbar.pack(side="right", fill="y")
@@ -113,16 +119,20 @@ canvas.configure(yscrollcommand=scrollbar.set)
 
 labelFrame = tk.Frame(canvas)
 labelFrame.bind(
-    "<Configure>",
-    lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+    "<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
 )
 
 canvas.create_window((0, 0), window=labelFrame, anchor="nw")
 
-infoLbl = tk.Label(labelFrame, text="To jest bardzo długi tekst, który powinien "
-                                    "się zawijać i być możliwy do przewinięcia "
-                                    "w razie potrzeby. " * 5,
-                   wraplength=180, justify="left")
-infoLbl.pack(fill="both", expand=True)
+infoLbl = tk.Label(
+    labelFrame,
+    text="To jest bardzo długi tekst, który powinien się zawijać i być możliwy do przewinięcia w razie potrzeby. "
+    * 5,
+    wraplength=180,
+    justify="left",
+)
+
+infoLbl.pack(fill="both", expand=True, pady=5)
+
 
 root.mainloop()

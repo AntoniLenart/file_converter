@@ -6,7 +6,7 @@ import moviepy.editor as mp
 import os
 
 
-def convert_image(input_file, input_format, output_format):
+def convert_image(input_file, input_format, output_format, infoLbl):
     try:
         user_canceled = False
         img = Image.open(input_file)
@@ -28,10 +28,10 @@ def convert_image(input_file, input_format, output_format):
                     user_canceled = True  # Użytkownik potwierdził anulowanie
                     break
                 # Nie wyświetlamy ostrzeżenia jeśli zamknięto przez X
-                messagebox.showwarning("Ostrzeżenie", "Nie wybrano pliku do zapisu. Spróbuj ponownie.")
+                infoLbl['text'] =  "Nie wybrano pliku do zapisu. Spróbuj ponownie."
             
         if user_canceled:
-            messagebox.showinfo("Informacja", "Zapis pliku został anulowany.")
+            infoLbl['text'] = "Zapis pliku został anulowany."
             return "anulowane"
 
         img.save(export_filename)    
@@ -48,21 +48,21 @@ def convert_image(input_file, input_format, output_format):
         return None
 
 
-def convert_audio(input_file, input_format, output_format):
+def convert_audio(input_file, input_format, output_format, infoLbl):
     try:
         user_canceled = False
         # print(input_file)
-        
+
         project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
         ffmpeg_dir = os.path.join(project_root, "static")
         os.environ["PATH"] += os.pathsep + ffmpeg_dir
-        
+
         audio = AudioSegment.from_file(input_file, format=input_format)
-        
+
         while True:
             export_filename = fd.asksaveasfilename(defaultextension=f'.{output_format}',
                                                     filetypes=[(f"{output_format.upper()} files", f"*.{output_format}")])
-            
+
             if export_filename:  # Jeśli plik został wybrany
                 break  # Wyjdź z pętli
             else:
@@ -70,15 +70,15 @@ def convert_audio(input_file, input_format, output_format):
                     user_canceled = True  # Użytkownik potwierdził anulowanie
                     break
                 # Nie wyświetlamy ostrzeżenia jeśli zamknięto przez X
-                messagebox.showwarning("Ostrzeżenie", "Nie wybrano pliku do zapisu. Spróbuj ponownie.")
-            
+                infoLbl["text"] = "Nie wybrano pliku do zapisu. Spróbuj ponownie."
+
         if user_canceled:
-            messagebox.showinfo("Informacja", "Zapis pliku został anulowany.")
+            infoLbl["text"] = "Zapis pliku został anulowany."
             return "anulowane"
-        
+
         audio.export(export_filename, format=output_format)
         return export_filename
-        
+
     except FileNotFoundError as e:
         messagebox.showerror("Błąd", f"Nie znaleziono pliku wejściowego. {e}")
         return None
@@ -88,14 +88,14 @@ def convert_audio(input_file, input_format, output_format):
     except Exception as e:
         messagebox.showerror("Błąd", f"Wystąpił błąd: {e}")
         return None  
-    
+
     # audio = AudioSegment.from_file(input_file)
     # output_file = f"{input_file.split('.')[0]}_converted.{output_format}"
     # audio.export(output_file, format=output_format)
     # return output_file
 
 
-def convert_video(input_file, input_format, output_format):
+def convert_video(input_file, input_format, output_format, infoLbl):
     try:
         # Generate output file name based on input file name and desired format
         base_name = os.path.splitext(input_file)[0]
@@ -116,4 +116,3 @@ def convert_video(input_file, input_format, output_format):
 
     except Exception:
         messagebox.showerror("Error during video conversion:")
-
