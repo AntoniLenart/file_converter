@@ -81,7 +81,7 @@ root = tk.Tk()
 root.title("Konwerter plików")
 root.resizable(False, False)
 
-icon_image = Image.open('../static/icon.png')
+icon_image = Image.open('./static/icon.png')
 icon_photo = ImageTk.PhotoImage(icon_image)
 root.iconphoto(True, icon_photo)
 
@@ -104,7 +104,25 @@ fileBtn.grid(row=0, column=0, pady=(0, 10))
 downloadBtn = tk.Button(frame, text="Pobierz", command=save_file)
 downloadBtn.grid(row=1, column=0, pady=(0, 10))
 
-infoLbl = tk.Label(frame, text="Info")
-infoLbl.grid(row=1, column=1, pady=(0, 10))
+canvas = tk.Canvas(root, width=200, height=100)
+canvas.pack(side="right", fill="both", expand=True)
+
+scrollbar = tk.Scrollbar(root, orient="vertical", command=canvas.yview)
+scrollbar.pack(side="right", fill="y")
+canvas.configure(yscrollcommand=scrollbar.set)
+
+labelFrame = tk.Frame(canvas)
+labelFrame.bind(
+    "<Configure>",
+    lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+)
+
+canvas.create_window((0, 0), window=labelFrame, anchor="nw")
+
+infoLbl = tk.Label(labelFrame, text="To jest bardzo długi tekst, który powinien "
+                                    "się zawijać i być możliwy do przewinięcia "
+                                    "w razie potrzeby. " * 5,
+                   wraplength=180, justify="left")
+infoLbl.pack(fill="both", expand=True)
 
 root.mainloop()
