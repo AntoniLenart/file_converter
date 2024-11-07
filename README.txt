@@ -1,7 +1,6 @@
 file_converter/
 ├── frontend/
-│   ├── desktop_gui.py           # Interfejs desktopowy (Tkinter)
-│   ├── web_interface.py         # Interfejs webowy (Flask/Django)
+│   ├── desktop_gui.py           # Interfejs desktopowy (Tkinter) - plik uruchomieniowy
 ├── backend/
 │   ├── file_validator.py        # Walidacja plików
 │   ├── converter.py             # Moduł konwersji plików
